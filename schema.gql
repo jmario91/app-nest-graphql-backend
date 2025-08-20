@@ -1,0 +1,103 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UsuarioEntity {
+  id: ID!
+  nombre: String!
+  apellidoPaterno: String!
+  apellidoMaterno: String!
+  sexo: String!
+  fechaNacimiento: String!
+  edad: String
+  talla: String
+  peso: String
+  email: String!
+  aceptaTerminos: Boolean!
+  ocupacion: String
+  estadoCivil: String
+  nivelEducativo: String
+  idioma: String
+  hobbies: [String]
+  notasAdicionales: String
+  estatus: String
+  entidad: String
+  municipio: String
+  colonia: String
+  codigoPostal: String
+}
+
+type UsuariosPaginados {
+  total: Int!
+  paginas: Int!
+  paginaActual: Int!
+  usuarios: [UsuarioEntity!]!
+}
+
+type Query {
+  users: [UsuarioEntity!]!
+  usuariosPaginado(pagina: Int!, limite: Int!, filtro: FiltroUsuarioInput): UsuariosPaginados!
+  usuario(id: String!): UsuarioEntity!
+}
+
+input FiltroUsuarioInput {
+  nombre: String
+  email: String
+  estatus: String
+  municipio: String
+  entidad: String
+}
+
+type Mutation {
+  crearUsuario(input: CrearUsuarioInput!): UsuarioEntity!
+  actualizarUsuario(id: String!, input: UpdateUsuarioInput!): UsuarioEntity!
+  eliminarUsuario(id: String!): Boolean!
+}
+
+input CrearUsuarioInput {
+  nombre: String!
+  apellidoPaterno: String!
+  apellidoMaterno: String!
+  sexo: String!
+  fechaNacimiento: String!
+  edad: Int
+  talla: Float
+  peso: Float
+  ocupacion: String
+  estadoCivil: String
+  nivelEducativo: String
+  idioma: String
+  hobbies: [String]
+  notasAdicionales: String
+  estatus: String
+  entidad: String
+  municipio: String
+  colonia: String
+  codigoPostal: String
+  email: String!
+  aceptaTerminos: Boolean!
+}
+
+input UpdateUsuarioInput {
+  nombre: String
+  apellidoPaterno: String
+  apellidoMaterno: String
+  sexo: String
+  fechaNacimiento: String
+  edad: Int
+  talla: Float
+  peso: Float
+  email: String
+  aceptaTerminos: Boolean
+  ocupacion: String
+  estadoCivil: String
+  nivelEducativo: String
+  idioma: String
+  hobbies: [String]
+  notasAdicionales: String
+  estatus: String
+  entidad: String
+  municipio: String
+  colonia: String
+  codigoPostal: String
+}
