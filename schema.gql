@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type BeneficiarioEntity {
+  id: ID!
+  idDetalle: String!
+  nombre: String!
+}
+
 type UsuarioEntity {
   id: ID!
   nombre: String!
@@ -25,6 +31,7 @@ type UsuarioEntity {
   municipio: String
   colonia: String
   codigoPostal: String
+  beneficiarios: [BeneficiarioEntity]
 }
 
 type UsuariosPaginados {
@@ -76,6 +83,13 @@ input CrearUsuarioInput {
   codigoPostal: String
   email: String!
   aceptaTerminos: Boolean!
+  beneficiarios: [BeneficiarioInput]
+}
+
+input BeneficiarioInput {
+  id: String
+  idDetalle: String
+  nombre: String!
 }
 
 input UpdateUsuarioInput {
@@ -100,4 +114,5 @@ input UpdateUsuarioInput {
   municipio: String
   colonia: String
   codigoPostal: String
+  beneficiarios: [BeneficiarioInput]
 }

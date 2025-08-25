@@ -11,6 +11,14 @@ export class UsuariosService {
   constructor(@InjectModel(Usuario.name) private userModel: Model<UsuarioDocument>) {}
 
   async create(input: CrearUsuarioInput): Promise<Usuario> {
+    // const createdUser = new this.userModel(input);
+    // return createdUser.save();
+     input.beneficiarios = (input.beneficiarios ?? []).map((b) => ({
+      ...b,
+      id: b.id ?? new Date().getTime().toString(),
+      idDetalle: b.idDetalle ?? 'DET-' + new Date().getTime(),
+    }));
+
     const createdUser = new this.userModel(input);
     return createdUser.save();
   }
@@ -64,6 +72,12 @@ export class UsuariosService {
   }
 
   async actualizarUsuario(id: string, input: UpdateUsuarioInput): Promise<Usuario> {
+  input.beneficiarios = (input.beneficiarios ?? []).map((b) => ({
+      ...b,
+      id: b.id ?? new Date().getTime().toString(),
+      idDetalle: b.idDetalle ?? 'DET-' + new Date().getTime(),
+    }));
+  
     const usuario = await this.userModel.findByIdAndUpdate(id, input, { new: true }).exec();
     if (!usuario) throw new NotFoundException(`Usuario con id ${id} no encontrado`);
     return usuario;

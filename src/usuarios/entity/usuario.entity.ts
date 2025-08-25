@@ -1,5 +1,18 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 
+
+@ObjectType()
+export class BeneficiarioEntity {
+  @Field(() => ID)
+  id: string;
+
+  @Field()
+  idDetalle: string;
+
+  @Field()
+  nombre: string;
+}
+
 @ObjectType()
 export class UsuarioEntity {
   @Field(() => ID)
@@ -34,4 +47,7 @@ export class UsuarioEntity {
   @Field({ nullable: true }) municipio?: string;
   @Field({ nullable: true }) colonia?: string;
   @Field({ nullable: true }) codigoPostal?: string;
+
+   @Field(() => [BeneficiarioEntity], { nullable: 'itemsAndList' })
+  beneficiarios?: BeneficiarioEntity[];
 }

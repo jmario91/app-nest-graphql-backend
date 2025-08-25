@@ -3,6 +3,20 @@ import { Document } from 'mongoose';
 
 export type UsuarioDocument = Usuario & Document;
 
+@Schema({ _id: false })
+export class Beneficiario {
+  @Prop({ required: true })
+  id: string;
+
+  @Prop({ required: true })
+  idDetalle: string;
+
+  @Prop({ required: true })
+  nombre: string;
+}
+
+const BeneficiarioSchema = SchemaFactory.createForClass(Beneficiario);
+
 @Schema({ timestamps: true })
 export class Usuario {
   @Prop({ required: true }) nombre: string;
@@ -34,6 +48,9 @@ export class Usuario {
   @Prop() municipio: string;
   @Prop() colonia: string;
   @Prop() codigoPostal: string;
+
+  @Prop({ type: [BeneficiarioSchema], default: [] })
+  beneficiarios: Beneficiario[];
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);

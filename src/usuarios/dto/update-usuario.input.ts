@@ -1,5 +1,6 @@
 import { InputType, Field, Int, Float } from '@nestjs/graphql';
-import { IsEmail, IsOptional, IsBoolean, IsIn, IsString } from 'class-validator';
+import { IsEmail, IsOptional, IsBoolean, IsIn, IsString,IsNotEmpty } from 'class-validator';
+import { BeneficiarioInput } from './beneficiario.input';
 
 @InputType()
 export class UpdateUsuarioInput {
@@ -92,4 +93,8 @@ export class UpdateUsuarioInput {
   @Field({ nullable: true })
   @IsOptional()
   codigoPostal?: string;
+
+    @Field(() => [BeneficiarioInput], { nullable: 'itemsAndList' })
+  @IsOptional()
+  beneficiarios?: BeneficiarioInput[];
 }

@@ -1,7 +1,8 @@
 import { InputType, Field,Int,Float } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, IsOptional, IsBoolean, IsIn } from 'class-validator';
+import { BeneficiarioInput } from './beneficiario.input';
 
-@InputType()
+ @InputType()
 export class CrearUsuarioInput {
   @Field()
   @IsNotEmpty()
@@ -79,7 +80,6 @@ export class CrearUsuarioInput {
   @IsOptional()
   codigoPostal?: string;
 
-  // 🚀 Campos que faltaban:
   @Field()
   @IsEmail()
   email: string;
@@ -87,4 +87,9 @@ export class CrearUsuarioInput {
   @Field()
   @IsBoolean()
   aceptaTerminos: boolean;
+
+    @Field(() => [BeneficiarioInput], { nullable: 'itemsAndList' })
+  @IsOptional()
+  beneficiarios?: BeneficiarioInput[];
 }
+
