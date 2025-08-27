@@ -31,7 +31,8 @@ export class UsuarioEntity {
 
   @Field() email: string;
 
-  @Field() aceptaTerminos: boolean;
+
+  @Field({ nullable: true }) aceptaTerminos: boolean;
 
   @Field({ nullable: true }) ocupacion?: string;
   @Field({ nullable: true }) estadoCivil?: string;
@@ -47,6 +48,10 @@ export class UsuarioEntity {
   @Field({ nullable: true }) municipio?: string;
   @Field({ nullable: true }) colonia?: string;
   @Field({ nullable: true }) codigoPostal?: string;
+
+  password?: string;
+  @Field({ nullable: true })
+  role?: string;
 
    @Field(() => [BeneficiarioEntity], { nullable: 'itemsAndList' })
   beneficiarios?: BeneficiarioEntity[];

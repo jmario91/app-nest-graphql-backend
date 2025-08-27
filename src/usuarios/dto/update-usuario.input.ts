@@ -94,6 +94,10 @@ export class UpdateUsuarioInput {
   @IsOptional()
   codigoPostal?: string;
 
+  @Field()
+  @IsOptional()   
+  password: string;
+
     @Field(() => [BeneficiarioInput], { nullable: 'itemsAndList' })
   @IsOptional()
   beneficiarios?: BeneficiarioInput[];

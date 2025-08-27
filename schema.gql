@@ -19,7 +19,7 @@ type UsuarioEntity {
   talla: String
   peso: String
   email: String!
-  aceptaTerminos: Boolean!
+  aceptaTerminos: Boolean
   ocupacion: String
   estadoCivil: String
   nivelEducativo: String
@@ -31,6 +31,7 @@ type UsuarioEntity {
   municipio: String
   colonia: String
   codigoPostal: String
+  role: String
   beneficiarios: [BeneficiarioEntity]
 }
 
@@ -39,6 +40,11 @@ type UsuariosPaginados {
   paginas: Int!
   paginaActual: Int!
   usuarios: [UsuarioEntity!]!
+}
+
+type AuthPayload {
+  access_token: String!
+  usuario: UsuarioEntity!
 }
 
 type Query {
@@ -59,6 +65,7 @@ type Mutation {
   crearUsuario(input: CrearUsuarioInput!): UsuarioEntity!
   actualizarUsuario(id: String!, input: UpdateUsuarioInput!): UsuarioEntity!
   eliminarUsuario(id: String!): Boolean!
+  login(input: LoginInput!): AuthPayload!
 }
 
 input CrearUsuarioInput {
@@ -83,6 +90,7 @@ input CrearUsuarioInput {
   codigoPostal: String
   email: String!
   aceptaTerminos: Boolean!
+  password: String!
   beneficiarios: [BeneficiarioInput]
 }
 
@@ -114,5 +122,11 @@ input UpdateUsuarioInput {
   municipio: String
   colonia: String
   codigoPostal: String
+  password: String!
   beneficiarios: [BeneficiarioInput]
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }

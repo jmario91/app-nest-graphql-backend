@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document,Types } from 'mongoose';
 
-export type UsuarioDocument = Usuario & Document;
+export type UsuarioDocument = Usuario & Document & { _id: Types.ObjectId };;
 
 @Schema({ _id: false })
 export class Beneficiario {
@@ -48,6 +48,9 @@ export class Usuario {
   @Prop() municipio: string;
   @Prop() colonia: string;
   @Prop() codigoPostal: string;
+
+  @Prop({ required: true }) password: string;
+  @Prop({ default: 'USER' }) role: string;
 
   @Prop({ type: [BeneficiarioSchema], default: [] })
   beneficiarios: Beneficiario[];

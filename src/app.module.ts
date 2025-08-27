@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UsuariosModule } from './usuarios/usuarios.module';
     }),
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/miapp'),
     UsuariosModule,
+    AuthModule
   ],
 })
 export class AppModule {}

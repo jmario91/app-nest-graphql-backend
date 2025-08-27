@@ -5,12 +5,16 @@ import { Usuario, UsuarioDocument } from './schema/usuario.schema';
 import { CrearUsuarioInput } from './dto/create-usuario.input';
 import { UpdateUsuarioInput } from './dto/update-usuario.input';
 import { FiltroUsuarioInput } from './dto/filtro-usuario.input';
+import { hash } from 'crypto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsuariosService {
   constructor(@InjectModel(Usuario.name) private userModel: Model<UsuarioDocument>) {}
 
   async create(input: CrearUsuarioInput): Promise<Usuario> {
+    const salt =await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(input.password, salt);
     // const createdUser = new this.userModel(input);
     // return createdUser.save();
      input.beneficiarios = (input.beneficiarios ?? []).map((b) => ({
@@ -19,10 +23,17 @@ export class UsuariosService {
       idDetalle: b.idDetalle ?? 'DET-' + new Date().getTime(),
     }));
 
-    const createdUser = new this.userModel(input);
+    const createdUser = new this.userModel({
+      ...input,
+      password: hashPassword,  
+    
+    });
     return createdUser.save();
   }
 
+async findByEmail(email: string) {
+  return this.userModel.findOne({ email }).exec();
+}
   async findAll(): Promise<Usuario[]> {
     return this.userModel.find().exec();
   }
@@ -54,6 +65,7 @@ export class UsuariosService {
   const total = await this.userModel.countDocuments(query);
   const usuarios = await this.userModel
     .find(query)
+    .select('-password') // Excluir el campo password
     .skip((pagina - 1) * limite)
     .limit(limite)
     .exec();
@@ -66,7 +78,7 @@ export class UsuariosService {
   };
 }
   async usuarioPorId(id: string): Promise<Usuario> {
-    const usuario = await this.userModel.findById(id).exec();
+    const usuario = await this.userModel.findById(id).select("-password").exec();
     if (!usuario) throw new NotFoundException(`Usuario con id ${id} no encontrado`);
     return usuario;
   }
@@ -78,7 +90,14 @@ export class UsuariosService {
       idDetalle: b.idDetalle ?? 'DET-' + new Date().getTime(),
     }));
   
-    const usuario = await this.userModel.findByIdAndUpdate(id, input, { new: true }).exec();
+if (input.password) {
+const salt =await bcrypt.genSalt(10);
+input.password = await bcrypt.hash(input.password, salt);
+}
+
+    const usuario = await this.userModel.findByIdAndUpdate(id, input, { new: true })
+    .select("-password")
+    .exec();
     if (!usuario) throw new NotFoundException(`Usuario con id ${id} no encontrado`);
     return usuario;
   }

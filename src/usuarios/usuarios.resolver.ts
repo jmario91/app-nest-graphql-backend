@@ -5,6 +5,11 @@ import { CrearUsuarioInput } from './dto/create-usuario.input';
 import { UsuariosPaginados } from './dto/usuarios-paginados.response';
 import { UpdateUsuarioInput } from './dto/update-usuario.input';
 import { FiltroUsuarioInput } from './dto/filtro-usuario.input';
+import { GqlAuthGuard } from "../auth/gql-auth.guard";
+import { CurrentUser } from "../auth/decorators/current-user.decorator";
+import { use } from 'passport';
+import { UseGuards } from '@nestjs/common';
+
 
 @Resolver(() => UsuarioEntity)
 export class UsuariosResolver {
@@ -21,29 +26,42 @@ export class UsuariosResolver {
   }
 
   @Query(() => UsuariosPaginados)
+  @UseGuards(GqlAuthGuard)
   usuariosPaginado(
     @Args('pagina', { type: () => Int }) pagina: number,
     @Args('limite', { type: () => Int }) limite: number,
     @Args('filtro', { nullable: true }) filtro?: FiltroUsuarioInput,
+  @CurrentUser() usuario?: UsuarioEntity,
   ) {
     return this.usersService.usuariosPaginado(pagina, limite, filtro);
   }
 
   // Obtener por ID
   @Query(() => UsuarioEntity)
-  usuario(@Args('id') id: string) {
+  @UseGuards(GqlAuthGuard)
+  usuario(@Args('id') id: string,
+@CurrentUser() usuario?: UsuarioEntity
+) {
     return this.usersService.usuarioPorId(id);
   }
 
   // Actualizar
   @Mutation(() => UsuarioEntity)
-  actualizarUsuario(@Args('id') id: string, @Args('input') input: UpdateUsuarioInput) {
+  @UseGuards(GqlAuthGuard)
+  actualizarUsuario(
+    @Args('id') id: string, 
+    @Args('input') input: UpdateUsuarioInput,
+@CurrentUser() usuario?: UsuarioEntity
+) {
     return this.usersService.actualizarUsuario(id, input);
   }
 
   // Eliminar
   @Mutation(() => Boolean)
-  eliminarUsuario(@Args('id') id: string) {
+  @UseGuards(GqlAuthGuard)
+  eliminarUsuario(@Args('id') id: string,
+@CurrentUser() usuario?: UsuarioEntity
+) {
     return this.usersService.eliminarUsuario(id);
   }
 }
