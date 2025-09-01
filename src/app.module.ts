@@ -4,6 +4,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { AuthModule } from './auth/auth.module';
+import { UploadScalar } from './common/scalars/upload.scalar';
 
 @Module({
   imports: [
@@ -16,5 +17,6 @@ import { AuthModule } from './auth/auth.module';
     UsuariosModule,
     AuthModule
   ],
+  providers: [UploadScalar],
 })
 export class AppModule {}

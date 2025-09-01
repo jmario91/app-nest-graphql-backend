@@ -47,6 +47,9 @@ type AuthPayload {
   usuario: UsuarioEntity!
 }
 
+"""File upload scalar type"""
+scalar Upload
+
 type Query {
   users: [UsuarioEntity!]!
   usuariosPaginado(pagina: Int!, limite: Int!, filtro: FiltroUsuarioInput): UsuariosPaginados!
